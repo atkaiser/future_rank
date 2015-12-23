@@ -1,38 +1,10 @@
 <!doctype html>
 <script type="text/javascript" src="static/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="static/jquery.bracket.min.js"></script>
+<script type="text/javascript" src="static/utils.js"></script>
 <link rel="stylesheet" type="text/css" href="static/jquery.bracket.min.css" />
-<div id="matchCallback">
-</div>
-<div id="minimal">
-  <div class="demo">
+<div id="bracket">
+  <div class="main">
   </div>
 </div>
-<script>
-  var minimalData = {
-      teams : [
-        ["Djoko", "Ferrer"],
-        ["Murray", "Berdych"],
-        ["Kei", "Fed"],
-        ["Tsonga", "Nadal"]
-      ],
-      results : [
-        [[1,2,'Match 1']]
-      ]
-    }
-  function onclick(data) {
-    console.log(data);
-    $('#matchCallback').text("onclick(data: '" + data + "')")
-  }
-  
-  $( "#dataTable tbody tr" ).on( "click", function() {
-  console.log( $( this ).text() );
-});
-  
-  $(function() {
-      $('#minimal .demo').bracket({
-        skipConsolationRound: true,
-        onMatchClick: onclick,
-        init: minimalData /* data to initialize the bracket with */ })
-    })
-</script>
+<script type="text/javascript" src="static/bracket.js"></script>
