@@ -16,41 +16,62 @@ function getResults(rounds) {
     return results;
 }
 
-var players = 
-    [
-        "Djoko",
-        "Ferrer",
-        "Kei",
-        "Fed",
-        "Tsonga",
-        "Nadal",
-        "Berdych",
-        "Murray"
-    ]
-
-var seeds = {
-        "Djoko": 1,
-        "Fed": 2,
-        "Kei": 3,
-        "Murray": 4,
-        "Tsonga": 5,
-        "Nadal": 6,
-        "Berdych": 7,
-        "Ferrer": 8
+function updateClick(rounds, player, round) {
+    var match = Math.floor(rounds[round].indexOf(player) / 2);
+    round += 1;
+    var originalWinner = rounds[round][match];
+    var nextWinner = rounds[round][match];
+    while (originalWinner == nextWinner) {
+        rounds[round][match] = player;
+        round += 1;
+        match = Math.floor(match / 2);
+        if (round < rounds.length) {
+            nextWinner = rounds[round][match]; 
+        } else {
+            nextWinner = "";
+        }
+    }
 }
 
-var rankings = [
-        ["Djoko", 1000],
-        ["Fed", 920],
-        ["Kei", 600],
-        ["Murray", 700],
-        ["Tsonga", 50],
-        ["Nadal", 650],
-        ["Berdych", 300],
-        ["Ferrer", 10]
-]
+// Update the displayed rankings
+function updateDisplayedRankings(rankings) {
+    var rankingsList = [];
+    for (var player in rankings) {
+        rankingsList.push([player, rankings[player]]);
+    }
+    rankingsList.sort(function sort(a, b) {return b[1] - a[1]});
+    var rankingsDiv = $('#rankings');
+    rankingsDiv.empty();
+    for (var i = 0; i < rankingsList.length; i++) {
+        $('<div/>')
+            .text(rankingsList[i][0])
+            .addClass('ranking-player')
+            .appendTo(rankingsDiv);
+        $('<div/>')
+            .text(rankingsList[i][1])
+            .addClass('ranking-points')
+            .appendTo(rankingsDiv);
+    }
+}
 
-var points = [0, 100, 200];
+// Based on results
+function calcRankings(rankings, rounds, points) {
+    var newRankings = $.extend({}, rankings);
+    for(var i = 0; i < rounds.length-1; i += 1) {
+        var players = rounds[i];
+        var winners = rounds[i+1];
+        for(var j = 0; j < players.length; j += 2) {
+            if (players[j] == winners[j/2]) {
+                newRankings[players[j+1]] += points[i];
+            } else {
+                newRankings[players[j]] += points[i];
+            }
+        }
+    }
+    var winner = rounds[rounds.length-1][0];
+    newRankings[winner] += points[points.length-1];
+    return newRankings;
+}
 
 var numRounds = Math.log2(players.length / 2);
 
@@ -81,13 +102,16 @@ var results = getResults(rounds);
 var data = {
         teams : matches,
         results : [results]
-    }
+    };
   
 $(function() {
     $('#bracket .main').bracket({
         skipConsolationRound: true,
         init: data})
-    })
+    });
+
+var newRankings = calcRankings(rankings, rounds, points);
+updateDisplayedRankings(newRankings);
     
 $( "body" ).click(function( event ) {
     var origTarget = event.target;
@@ -111,18 +135,18 @@ $( "body" ).click(function( event ) {
     }
     
     var player = players[teamId];
-    var match = Math.floor(rounds[round].indexOf(player) / 2);
-    console.log(match);
-    rounds[round+1][match] = player;
+    updateClick(rounds, player, round);
     
     var newResults = getResults(rounds); 
-    
     var newData = {
             teams : matches,
             results : [newResults]
-        }
+    };
     
     $('#bracket .main').bracket({
         skipConsolationRound: true,
-        init: newData })
+        init: newData });
+    
+    var newRankings = calcRankings(rankings, rounds, points);
+    updateDisplayedRankings(newRankings);
 });
