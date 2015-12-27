@@ -1,9 +1,12 @@
 """
 Gets the draw for the current tournament.
+
+@author: Alex Kaiser
 """
 
 import requests
 from lxml import html
+from tqdm import tqdm
 
 
 def get_tournament_url(current_tournament, root_url):
@@ -22,6 +25,10 @@ def get_tournament_url(current_tournament, root_url):
     return tournament_url
 
 
+def create_random_seeds(matches, seeds):
+    
+
+
 def draw(current_tournament,
          root_url='http://www.atpworldtour.com'):
     # current_tournament = "Australian Open"
@@ -31,12 +38,33 @@ def draw(current_tournament,
     tree = html.fromstring(page.content)
 
     matches = []
+    seeds = {}
 
-    for match in tree.xpath('//table[@class="scores-draw-entry-box-table"]'):
-        players = match.xpath('tbody/tr/td/a')
-        for player in players:
-            matches.append(player.get("data-ga-label"))
-        if len(players) == 1:
-            matches.append("Bye")
+    for match in tqdm(tree.xpath('//table[@class=' +
+                                 '"scores-draw-entry-box-table"]')):
+        for player_box in match.xpath('tbody/tr'):
+            players = player_box.xpath('td/a')
+            if players:
+                player = players[0]
+                player = player.get("data-ga-label")
+                matches.append(player)
+            else:
+                matches.append("Bye")
+            seed_box = player_box.xpath('td/span')
+            if seed_box:
+                seed = seed_box[0]
+                seed = seed.text.strip().strip("()")
+                if player:
+                    if seed.isdigit():
+                        seeds[player] = seed
+                else:
+                    print "ERROR: Found seed without player"
 
-    return matches
+    create_random_seeds(matches, seeds)
+
+    return matches, seeds
+
+if __name__ == '__main__':
+    matches, seeds = draw("Australian Open")
+    print matches
+    print seeds

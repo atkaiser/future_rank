@@ -1,5 +1,7 @@
 """
-Breakdown of how much each round at each type of tournament is worth
+Breakdown of how much each round at each type of tournament is worth.
+
+@author: Alex Kaiser
 """
 
 

@@ -1,5 +1,7 @@
 """
 Methods in this script deal with getting ranking points for players.
+
+@author: Alex Kaiser
 """
 
 import requests
