@@ -67,7 +67,7 @@ def draw(current_tournament,
                     if seed.isdigit():
                         seeds[player] = int(seed)
                 else:
-                    print "ERROR: Found seed without player"
+                    print("ERROR: Found seed without player")
 
     create_random_seeds(matches, seeds)
 
@@ -75,5 +75,5 @@ def draw(current_tournament,
 
 if __name__ == '__main__':
     matches, seeds = draw("Australian Open")
-    print matches
-    print seeds
+    print(matches)
+    print(seeds)

@@ -11,37 +11,37 @@ from rankings import get_current_rankings, subtract_tournament
 
 
 def print_points(points):
-    print "var points = [",
+    print("var points = [", end=' ')
     points_list = ", ".join(points)
-    print points_list,
-    print "];"
+    print(points_list, end=' ')
+    print("];")
 
 
 def print_rankings(rankings):
     sorted(rankings, key=lambda ranking: ranking[1])
-    print "var rankings = {"
+    print("var rankings = {")
     for ranking in rankings:
-        print '    "{}": {}'.format(ranking[0], ranking[1])
-    print"}\n"
+        print('    "{}": {}'.format(ranking[0], ranking[1]))
+    print("}\n")
 
 
 def print_seeds(seeds):
-    print "var seeds = {"
-    for key, value in sorted(seeds.iteritems(), key=lambda x: x[1]):
-        print '    "{}": {}'.format(key, value)
-    print"}\n"
+    print("var seeds = {")
+    for key, value in sorted(iter(seeds.items()), key=lambda x: x[1]):
+        print('    "{}": {}'.format(key, value))
+    print("}\n")
 
 
 def print_players(matches):
-    print "var players =\n["
-    print "    " + ",\n    ".join(matches)
-    print "]\n"
+    print("var players =\n[")
+    print("    " + ",\n    ".join(matches))
+    print("]\n")
 
 
 def main(tournament, tourn_type):
     points_list = points(tourn_type)
     if not points_list:
-        print "Not a valid tournament type"
+        print("Not a valid tournament type")
         return
     matches, seeds = draw(tournament)
     last_monday = date.today()
