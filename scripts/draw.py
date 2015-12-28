@@ -4,6 +4,7 @@ Gets the draw for the current tournament.
 @author: Alex Kaiser
 """
 
+import random
 import requests
 from lxml import html
 from tqdm import tqdm
@@ -26,7 +27,15 @@ def get_tournament_url(current_tournament, root_url):
 
 
 def create_random_seeds(matches, seeds):
-    
+    max_seed = 0
+    for key in seeds:
+        if seeds[key] > max_seed:
+            max_seed = seeds[key]
+    max_seed += 1
+    for player in random.sample(matches, len(matches)):
+        if player not in seeds:
+            seeds[player] = max_seed
+            max_seed += 1
 
 
 def draw(current_tournament,
@@ -56,7 +65,7 @@ def draw(current_tournament,
                 seed = seed.text.strip().strip("()")
                 if player:
                     if seed.isdigit():
-                        seeds[player] = seed
+                        seeds[player] = int(seed)
                 else:
                     print "ERROR: Found seed without player"
 

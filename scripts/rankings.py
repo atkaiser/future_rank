@@ -16,7 +16,7 @@ def get_current_rankings(rank_date,
                          root_url="http://www.atpworldtour.com"):
     page = requests.get(root_url +
                         '/en/rankings/singles?rankDate=' +
-                        '2015-11-30' +
+                        rank_date +
                         '&rankRange=1-300')
     tree = html.fromstring(page.content)
 
