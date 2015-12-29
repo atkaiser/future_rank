@@ -5,9 +5,9 @@ Created on Dec 26, 2015
 '''
 import argparse
 from datetime import date, timedelta
-from draw import draw
-from points import points
-from rankings import get_current_rankings, subtract_tournament
+from .draw import draw
+from .points import points
+from .rankings import get_current_rankings, subtract_tournament
 
 
 def print_points(points):
