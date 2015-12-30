@@ -40,18 +40,49 @@ function updateDisplayedRankings(rankings) {
         rankingsList.push([player, rankings[player]]);
     }
     rankingsList.sort(function sort(a, b) {return b[1] - a[1]});
-    var rankingsDiv = $('#rankings');
-    rankingsDiv.empty();
+    var rankingsTable = $('#rankings');
+    rankingsTable.empty();
+    var tableHeader = $('<tr/>');
+    $('<th/>').text('Rank').appendTo(tableHeader);
+    $('<th/>').text('Name').appendTo(tableHeader);
+    $('<th/>').text('Points').appendTo(tableHeader);
+    tableHeader.appendTo(rankingsTable);
     for (var i = 0; i < rankingsList.length; i++) {
-        $('<div/>')
+        var tableRow = $('<tr/>');
+        $('<td/>')
+            .text(i+1)
+            .appendTo(tableRow);
+        $('<td/>')
             .text(rankingsList[i][0])
-            .addClass('ranking-player')
-            .appendTo(rankingsDiv);
-        $('<div/>')
+            .addClass("player")
+            .appendTo(tableRow);
+        $('<td/>')
             .text(rankingsList[i][1])
-            .addClass('ranking-points')
-            .appendTo(rankingsDiv);
+            .appendTo(tableRow);
+        tableRow.appendTo(rankingsTable);
     }
+}
+
+function updateDisplayedBracket(rounds, roundsToDisplay) {
+    
+    var matches = [];
+    for (var i = 0; i < rounds[0].length; i += 2) {
+        var match = [rounds[0][i], rounds[0][i+1]];
+        matches.push(match);
+    }
+    
+    var results = getResults(rounds);
+
+    var data = {
+            teams : matches,
+            results : [results]
+        };
+      
+    $(function initBracket() {
+        $('#bracket .main').bracket({
+            skipConsolationRound: true,
+            init: data})
+        });
 }
 
 // Based on results
@@ -99,29 +130,12 @@ while (rounds[rounds.length-1].length > 1) {
     rounds.push(newRound);
 }
 
-matches = [];
-for (var i = 0; i < players.length; i += 2) {
-    var match = [players[i], players[i+1]];
-    matches.push(match);
-}
-
-var results = getResults(rounds);
-
-var data = {
-        teams : matches,
-        results : [results]
-    };
-  
-$(function() {
-    $('#bracket .main').bracket({
-        skipConsolationRound: true,
-        init: data})
-    });
+updateDisplayedBracket(rounds, numRounds);
 
 var newRankings = calcRankings(rankings, rounds, points);
 updateDisplayedRankings(newRankings);
     
-$( "body" ).click(function( event ) {
+$( "body" ).click(function respondToClick( event ) {
     var origTarget = event.target;
     var target = event.target;
     if (!isInArray("team", target.parentElement.classList)) {
@@ -145,15 +159,7 @@ $( "body" ).click(function( event ) {
     var player = players[teamId];
     updateClick(rounds, player, round);
     
-    var newResults = getResults(rounds); 
-    var newData = {
-            teams : matches,
-            results : [newResults]
-    };
-    
-    $('#bracket .main').bracket({
-        skipConsolationRound: true,
-        init: newData });
+    updateDisplayedBracket(rounds, numRounds);
     
     var newRankings = calcRankings(rankings, rounds, points);
     updateDisplayedRankings(newRankings);
