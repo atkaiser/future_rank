@@ -21,21 +21,21 @@ def print_rankings(rankings):
     sorted(rankings, key=lambda ranking: ranking[1])
     print("var rankings = {")
     for ranking in rankings:
-        print('    "{}": {}'.format(ranking[0], ranking[1]))
+        print('    "{}": {},'.format(ranking[0], ranking[1]))
     print("}\n")
 
 
 def print_seeds(seeds):
     print("var seeds = {")
     for key, value in sorted(iter(seeds.items()), key=lambda x: x[1]):
-        print('    "{}": {}'.format(key, value))
+        print('    "{}": {},'.format(key, value))
     print("}\n")
 
 
 def print_players(matches):
     print("var players =\n[")
-    print("    " + ",\n    ".join(matches))
-    print("]\n")
+    print("    '" + "',\n    '".join(matches), end="")
+    print("'\n]\n")
 
 
 def main(tournament, tourn_type):
@@ -52,7 +52,7 @@ def main(tournament, tourn_type):
     print_players(matches)
     print_seeds(seeds)
     print_rankings(rankings)
-    print_points(points)
+    print_points([str(p) for p in points_list])
 
 
 if __name__ == '__main__':

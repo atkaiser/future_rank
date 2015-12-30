@@ -1,0 +1,17 @@
+#content, html, body {
+    height: 100%;
+}
+
+#bracket {
+    float: left;
+    width: 75%;
+    height: 100%;
+    overflow: scroll;
+}
+
+#right {
+    float: right;
+    width: 25%;
+    height: 100%;
+    overflow: scroll;
+}

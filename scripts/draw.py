@@ -40,7 +40,6 @@ def create_random_seeds(matches, seeds):
 
 def draw(current_tournament,
          root_url='http://www.atpworldtour.com'):
-    # current_tournament = "Australian Open"
     tournament_url = get_tournament_url(current_tournament, root_url)
 
     page = requests.get(tournament_url)

@@ -62,9 +62,17 @@ function calcRankings(rankings, rounds, points) {
         var winners = rounds[i+1];
         for(var j = 0; j < players.length; j += 2) {
             if (players[j] == winners[j/2]) {
-                newRankings[players[j+1]] += points[i];
+                if (players[j+1] in newRankings) {
+                    newRankings[players[j+1]] += points[i];
+                } else {
+                    newRankings[players[j+1]] = points[i];
+                }
             } else {
-                newRankings[players[j]] += points[i];
+                if (players[j] in newRankings) {
+                    newRankings[players[j]] += points[i];
+                } else {
+                    newRankings[players[j]] = points[i];
+                }
             }
         }
     }
