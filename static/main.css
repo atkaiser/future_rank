@@ -30,7 +30,7 @@ html, body {
     font-size: 3rem;
     position: relative;
     z-index: 10;
-    height: 100px;
+    height: 75px;
 }
 
 #container {

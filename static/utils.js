@@ -6,3 +6,7 @@ function isInArray(value, array) {
     }
     return false;
 }
+
+function numRounds(rounds) {
+    return rounds.length - 1;
+}
