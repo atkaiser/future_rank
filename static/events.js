@@ -66,14 +66,30 @@ function hideRound() {
     if (displayedRounds > 0) {
         displayedRounds -= 1;
     }
-//    _updateButtons();
+    _updateButtons();
     updateDisplayedBracket(rounds, displayedRounds);
 }
 
 function showRound() {
     console.log("show");
+    if (displayedRounds < 7) {
+        displayedRounds += 1;
+    }
+    _updateButtons();
+    updateDisplayedBracket(rounds, displayedRounds);
 }
 
-//function _updateButtons() {
-//    if 
-//}
+function _updateButtons() {
+    console.log("displayed: " + displayedRounds);
+    console.log("numRounds: " + numRounds(rounds));
+    if (displayedRounds >= numRounds(rounds)) {
+        $("#showRound").prop("disabled", true)
+    } else {
+        $("#showRound").prop("disabled", false)
+    }
+    if (displayedRounds <= 1) {
+        $("#hideRound").prop("disabled", true)
+    } else {
+        $("#hideRound").prop("disabled", false)
+    }
+}
