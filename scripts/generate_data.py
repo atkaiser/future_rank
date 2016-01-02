@@ -5,7 +5,7 @@ Created on Dec 26, 2015
 '''
 import argparse
 from draw import draw
-from points import points
+from points import points, tournament_types
 from rankings import get_current_rankings, subtract_tournament
 
 
@@ -37,13 +37,18 @@ def print_players(matches):
     print("'\n]\n")
 
 
-def main(tournament, tourn_type):
-    points_list = points(tourn_type)
+def main(args):
+    tournament = args.tournament
+    points_list = points(args.type)
     if not points_list:
         print("Not a valid tournament type")
         return
     matches, seeds = draw(tournament)
-    rankings = get_current_rankings(300)
+    if args.num_rankings:
+        num_rankings = args.num_rankings
+    else:
+        num_rankings = 300
+    rankings = get_current_rankings(num_rankings)
     rankings = subtract_tournament(rankings, tournament)
     print_players(matches)
     print_seeds(seeds)
@@ -53,9 +58,13 @@ def main(tournament, tourn_type):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tourn", help="The current tournament.")
-    parser.add_argument("--type", help="The tournament type, one of: " +
-                        "Grand Slam, Masters 128, Masters 96," +
-                        "ATP 500, ATP 250")
+    parser.add_argument("tournament", help="The current tournament name")
+    parser.add_argument("type",
+                        help="The tournament type",
+                        choices=tournament_types)
+    parser.add_argument("-n",
+                        "--num_rankings",
+                        type=int,
+                        help="Number of rankings to download")
     args = parser.parse_args()
-    main(args.tourn, args.type)
+    main(args)

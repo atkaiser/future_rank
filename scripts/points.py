@@ -16,3 +16,10 @@ def points(tournament_level):
         return [20, 45, 90, 180, 300, 500]
     elif tournament_level == "ATP 250":
         return [5, 20, 45, 90, 150, 250]
+
+
+tournament_types = ["Grand Slam",
+                    "Masters 128",
+                    "Masters 96",
+                    "ATP 500",
+                    "ATP 250"]

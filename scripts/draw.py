@@ -11,17 +11,13 @@ from tqdm import tqdm
 
 
 def get_tournament_url(current_tournament, root_url):
-    page = requests.get(root_url + '/en/scores/current/')
+    page = requests.get(root_url + '/en/tournaments')
     tree = html.fromstring(page.content)
-    all_tournaments = tree.xpath('//ul[@id="archiveTournamentDropdown"]')[0]
-    tournament_url = ""
+    all_tournaments = tree.xpath('//li[@class=" has-link no-padding"]/a')
     for tournament in all_tournaments:
         if current_tournament in tournament.text:
-            value = tournament.get("data-value")
-            descriptor = tournament.get("data-descriptor")
-            tournament_url = root_url + \
-                "/en/scores/archive/" + \
-                descriptor + "/" + value + "/2016/draws"
+            link = tournament.get("href")[15:-9]
+            tournament_url = root_url + "/en/scores/current" + link + "/draws"
 
     return tournament_url
 
@@ -32,10 +28,15 @@ def create_random_seeds(matches, seeds):
         if seeds[key] > max_seed:
             max_seed = seeds[key]
     max_seed += 1
+    bye = False
     for player in random.sample(matches, len(matches)):
-        if player not in seeds:
+        if player == "Bye":
+            bye = True
+        elif player not in seeds:
             seeds[player] = max_seed
             max_seed += 1
+    if bye:
+        seeds["Bye"] = max_seed
 
 
 def draw(current_tournament,
