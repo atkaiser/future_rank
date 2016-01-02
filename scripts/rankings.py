@@ -4,6 +4,7 @@ Methods in this script deal with getting ranking points for players.
 @author: Alex Kaiser
 """
 
+from datetime import date, timedelta
 import requests
 from lxml import html
 from tqdm import tqdm
@@ -12,12 +13,16 @@ from tqdm import tqdm
 # root_url = 'http://www.atpworldtour.com'
 
 
-def get_current_rankings(rank_date,
+def get_current_rankings(num_rankings,
                          root_url="http://www.atpworldtour.com"):
+    last_monday = date.today()
+    while last_monday.weekday() != 0:
+        last_monday -= timedelta(days=1)
     page = requests.get(root_url +
                         '/en/rankings/singles?rankDate=' +
-                        rank_date +
-                        '&rankRange=1-300')
+                        str(last_monday) +
+                        '&rankRange=1-' +
+                        str(num_rankings))
     tree = html.fromstring(page.content)
 
     all_players = tree.xpath('//table[@class="mega-table"]/tbody')[0]

@@ -4,7 +4,6 @@ Created on Dec 26, 2015
 @author: Alex Kaiser
 '''
 import argparse
-from datetime import date, timedelta
 from draw import draw
 from points import points
 from rankings import get_current_rankings, subtract_tournament
@@ -44,10 +43,7 @@ def main(tournament, tourn_type):
         print("Not a valid tournament type")
         return
     matches, seeds = draw(tournament)
-    last_monday = date.today()
-    while last_monday.weekday() != 0:
-        last_monday -= timedelta(days=1)
-    rankings = get_current_rankings(str(last_monday))
+    rankings = get_current_rankings(300)
     rankings = subtract_tournament(rankings, tournament)
     print_players(matches)
     print_seeds(seeds)

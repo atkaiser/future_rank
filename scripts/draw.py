@@ -21,7 +21,7 @@ def get_tournament_url(current_tournament, root_url):
             descriptor = tournament.get("data-descriptor")
             tournament_url = root_url + \
                 "/en/scores/archive/" + \
-                descriptor + "/" + value + "/2015/draws"
+                descriptor + "/" + value + "/2016/draws"
 
     return tournament_url
 
