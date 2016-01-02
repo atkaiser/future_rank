@@ -14,12 +14,18 @@
   <script type="text/javascript" src="static/display.js"></script>
   <body>
     <div id="top">
-      <button id="showRound" onclick="showRound()" disabled>Show round</button>
-      <button id="hideRound" onclick="hideRound()">Hide round</button>
       <div>View Ranks</div>
     </div>
     <div id="container">
     	<div id="left">
+        <div id="navButtons">
+          <button id="showRound" class="btn" onclick="showRound()" disabled>
+            < Show more rounds
+          </button>
+          <button id="hideRound" class="btn" onclick="hideRound()">
+            Hide round >
+          </button>
+        </div>
     		<div id="bracket">
     		  <div class="main">
     		  </div>
