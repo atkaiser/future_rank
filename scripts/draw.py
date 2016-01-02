@@ -19,7 +19,7 @@ def get_tournament_url(current_tournament, root_url):
             link = tournament.get("href")[15:-9]
             tournament_url = root_url + "/en/scores/current" + link + "/draws"
 
-    return tournament_url
+    return tournament_url + "?matchType=singles"
 
 
 def create_random_seeds(matches, seeds):
@@ -42,7 +42,6 @@ def create_random_seeds(matches, seeds):
 def draw(current_tournament,
          root_url='http://www.atpworldtour.com'):
     tournament_url = get_tournament_url(current_tournament, root_url)
-
     page = requests.get(tournament_url)
     tree = html.fromstring(page.content)
 
@@ -74,6 +73,6 @@ def draw(current_tournament,
     return matches, seeds
 
 if __name__ == '__main__':
-    matches, seeds = draw("Australian Open")
+    matches, seeds = draw("Brisbane")
     print(matches)
     print(seeds)
