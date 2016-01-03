@@ -25,14 +25,14 @@ html, body {
     -webkit-justify-content: center;
     -ms-flex-pack: center;
     justify-content: center;
-/*     background-color: darkgreen; */
     font-size: 2rem;
     position: relative;
     z-index: 10;
-    margin-bottom: 10px;
+    height: 50px;
 }
 
 #container {
+    padding-top: 50px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -40,10 +40,11 @@ html, body {
     overflow: hidden;
     height: 100vh;
     position: relative;
-    margin: 0 auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     will-change: overflow;
+    max-width: 1500px;
+    margin: -50px auto;
 }
 
 #left, #right {
@@ -112,6 +113,7 @@ tr:nth-child(odd) td {
 
 #navButtons {
     float: right;
+    padding-top: 25px;
     padding-right: 25px;
 }
 
