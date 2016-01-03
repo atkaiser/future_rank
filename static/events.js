@@ -6,12 +6,10 @@ $( "#left" ).click(function respondToClick( event ) {
     var origTarget = event.target;
     var target = event.target;
     if (!isInArray("team", target.parentElement.classList)) {
-        console.log("Bad click");
         return;
     }
     var teamId = $(target.parentElement).attr("data-teamid");
     if (teamId == "-1") {
-        console.log("Not on person");
         return;
     }
     while ( target != null && 
@@ -26,12 +24,14 @@ $( "#left" ).click(function respondToClick( event ) {
     var startRound = numRounds(rounds) - displayedRounds;
     
     var player = rounds[startRound][teamId];
-    updateRoundsOnClick(rounds, player, round);
-    
-    updateDisplayedBracket(rounds, displayedRounds);
-    
-    var newRankings = calcRankings(rankings, rounds, points);
-    updateDisplayedRankings(newRankings);
+    if (player != "Bye") {
+        updateRoundsOnClick(rounds, player, round);
+        
+        updateDisplayedBracket(rounds, displayedRounds);
+        
+        var newRankings = calcRankings(rankings, rounds, points);
+        updateDisplayedRankings(newRankings);
+    }
 });
 
 // Based on rounds results calculate rankings
@@ -42,16 +42,20 @@ function calcRankings(rankings, rounds, points) {
         var winners = rounds[i+1];
         for(var j = 0; j < players.length; j += 2) {
             if (players[j] == winners[j/2]) {
-                if (players[j+1] in newRankings) {
-                    newRankings[players[j+1]] += points[i];
-                } else {
-                    newRankings[players[j+1]] = points[i];
+                if (players[j+1] != "Bye") {
+                    if (players[j+1] in newRankings) {
+                        newRankings[players[j+1]] += points[i];
+                    } else {
+                        newRankings[players[j+1]] = points[i];
+                    }
                 }
             } else {
-                if (players[j] in newRankings) {
-                    newRankings[players[j]] += points[i];
-                } else {
-                    newRankings[players[j]] = points[i];
+                if (players[j] != "Bye") {
+                    if (players[j] in newRankings) {
+                        newRankings[players[j]] += points[i];
+                    } else {
+                        newRankings[players[j]] = points[i];
+                    }
                 }
             }
         }
@@ -62,7 +66,6 @@ function calcRankings(rankings, rounds, points) {
 }
 
 function hideRound() {
-    console.log("hide");
     if (displayedRounds > 0) {
         displayedRounds -= 1;
     }
@@ -71,7 +74,6 @@ function hideRound() {
 }
 
 function showRound() {
-    console.log("show");
     if (displayedRounds < 7) {
         displayedRounds += 1;
     }
@@ -80,8 +82,6 @@ function showRound() {
 }
 
 function _updateButtons() {
-    console.log("displayed: " + displayedRounds);
-    console.log("numRounds: " + numRounds(rounds));
     if (displayedRounds >= numRounds(rounds)) {
         $("#showRound").prop("disabled", true)
     } else {
