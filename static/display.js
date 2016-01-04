@@ -26,16 +26,34 @@ function updateDisplayedRankings(rankings) {
     rankingsTable.empty();
     var tableHeader = $('<tr/>');
     $('<th/>').text('Rank').appendTo(tableHeader);
+    $('<th/>').text('').appendTo(tableHeader);
     $('<th/>').text('Name').appendTo(tableHeader);
     $('<th/>').text('Points').appendTo(tableHeader);
     tableHeader.appendTo(rankingsTable);
     for (var i = 0; i < rankingsList.length; i++) {
+        var player = rankingsList[i][0];
         var tableRow = $('<tr/>');
         $('<td/>')
             .text(i+1)
             .appendTo(tableRow);
+        var diff = oldRankings[player] - (i+1);
+        if (diff > 0) {
+            $('<td/>')
+                .html("&#x25B2;" + diff)
+                .addClass("up-arrow")
+                .appendTo(tableRow);
+        } else if (diff < 0) {
+            $('<td/>')
+                .html("&#x25BC;" + Math.abs(diff))
+                .addClass("down-arrow")
+                .appendTo(tableRow);
+        } else {
+            $('<td/>')
+                .text('')
+                .appendTo(tableRow);
+        }
         $('<td/>')
-            .text(rankingsList[i][0])
+            .text(player)
             .addClass("player")
             .appendTo(tableRow);
         $('<td/>')
