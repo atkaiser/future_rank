@@ -7,6 +7,7 @@ import argparse
 from draw import draw
 from points import points, tournament_types
 from rankings import get_current_rankings, subtract_tournament
+import rankings
 
 
 def print_points(points):
@@ -16,11 +17,21 @@ def print_points(points):
     print("];")
 
 
-def print_rankings(rankings):
+def print_new_rankings(rankings):
     sorted(rankings, key=lambda ranking: ranking[1])
     print("var rankings = {")
     for ranking in rankings:
         print('    "{}": {},'.format(ranking[0], ranking[1]))
+    print("}\n")
+
+
+def print_old_rankings(rankings):
+    sorted(rankings, key=lambda ranking: ranking[1])
+    print("var oldRankings = {")
+    rank_num = 1
+    for ranking in rankings:
+        print('    "{}": {},'.format(ranking[0], rank_num))
+        rank_num += 1
     print("}\n")
 
 
@@ -48,13 +59,14 @@ def main(args):
         num_rankings = args.num_rankings
     else:
         num_rankings = 300
-    rankings = get_current_rankings(num_rankings)
-    rankings = subtract_tournament(rankings, tournament)
+    current_rankings = get_current_rankings(num_rankings)
+    new_rankings = subtract_tournament(current_rankings, tournament)
     print_players(matches)
     print_seeds(seeds)
-    print_rankings(rankings)
+    print_new_rankings(new_rankings)
+    print_old_rankings(current_rankings)
     print_points([str(p) for p in points_list])
-    print("var tournament = {}".format(tournament))
+    print("var tournament = '{}';".format(tournament))
 
 
 if __name__ == '__main__':

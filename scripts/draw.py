@@ -73,6 +73,6 @@ def draw(current_tournament,
     return matches, seeds
 
 if __name__ == '__main__':
-    matches, seeds = draw("Brisbane")
+    matches, seeds = draw("Australian Open")
     print(matches)
     print(seeds)
