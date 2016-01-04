@@ -54,6 +54,7 @@ def main(args):
     print_seeds(seeds)
     print_rankings(rankings)
     print_points([str(p) for p in points_list])
+    print("var tournament = {}".format(tournament))
 
 
 if __name__ == '__main__':

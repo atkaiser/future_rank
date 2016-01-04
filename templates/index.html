@@ -14,17 +14,20 @@
   <script type="text/javascript" src="static/display.js"></script>
   <body>
     <div id="top">
-      <div>Future Tennis Rankings</div>
+      <div id="navButtons">
+        <button id="showRound" class="btn" onclick="showRound()" disabled>
+          < Show more rounds
+        </button>
+        <button id="hideRound" class="btn" onclick="hideRound()">
+          Hide last round >
+        </button>
+      </div>
+      <div id="title">Future Tennis Rankings</div>
     </div>
     <div id="container">
     	<div id="left">
-        <div id="navButtons">
-          <button id="showRound" class="btn" onclick="showRound()" disabled>
-            < Show more rounds
-          </button>
-          <button id="hideRound" class="btn" onclick="hideRound()">
-            Hide last round >
-          </button>
+        <div id="tournament-title">
+          Brisbane International
         </div>
     		<div id="bracket">
     		  <div class="main">

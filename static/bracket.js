@@ -20,3 +20,5 @@ updateDisplayedBracket(rounds, displayedRounds);
 
 var newRankings = calcRankings(rankings, rounds, points);
 updateDisplayedRankings(newRankings);
+
+$('#tournament-title').text(tournament);
