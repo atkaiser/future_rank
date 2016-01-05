@@ -4,10 +4,9 @@ Created on Dec 26, 2015
 @author: Alex Kaiser
 '''
 import argparse
-from draw import draw
+from draw import draw, extend_seeds
 from points import points, tournament_types
 from rankings import get_current_rankings, subtract_tournament
-import rankings
 
 
 def print_points(points):
@@ -61,6 +60,7 @@ def main(args):
         num_rankings = 300
     current_rankings = get_current_rankings(num_rankings)
     new_rankings = subtract_tournament(current_rankings, tournament)
+    seeds = extend_seeds(matches, seeds, current_rankings)
     print_players(matches)
     print_seeds(seeds)
     print_new_rankings(new_rankings)

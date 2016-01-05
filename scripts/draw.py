@@ -8,6 +8,7 @@ import random
 import requests
 from lxml import html
 from tqdm import tqdm
+import rankings
 
 
 def get_tournament_url(current_tournament, root_url):
@@ -23,11 +24,7 @@ def get_tournament_url(current_tournament, root_url):
 
 
 def create_random_seeds(matches, seeds):
-    max_seed = 0
-    for key in seeds:
-        if seeds[key] > max_seed:
-            max_seed = seeds[key]
-    max_seed += 1
+    max_seed = find_max_seed(seeds)
     bye = False
     for player in random.sample(matches, len(matches)):
         if player == "Bye":
@@ -37,6 +34,27 @@ def create_random_seeds(matches, seeds):
             max_seed += 1
     if bye:
         seeds["Bye"] = max_seed
+
+
+def extend_seeds(matches, seeds, rankings):
+    sorted(rankings, key=lambda ranking: ranking[1])
+    max_seed = find_max_seed(seeds)
+    for ranking in rankings:
+        player = ranking[0]
+        if player in matches and player not in seeds:
+            seeds[player] = max_seed
+            max_seed += 1
+    create_random_seeds(matches, seeds)
+    return seeds
+
+
+def find_max_seed(seeds):
+    max_seed = 0
+    for key in seeds:
+        if seeds[key] > max_seed:
+            max_seed = seeds[key]
+    max_seed += 1
+    return max_seed
 
 
 def draw(current_tournament,
@@ -68,9 +86,8 @@ def draw(current_tournament,
                 else:
                     print("ERROR: Found seed without player")
 
-    create_random_seeds(matches, seeds)
-
     return matches, seeds
+
 
 if __name__ == '__main__':
     matches, seeds = draw("Australian Open")
