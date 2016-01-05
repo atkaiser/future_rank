@@ -48,6 +48,13 @@ def print_players(matches):
 
 
 def main(args):
+    """
+    Gets all the information for the current rankings and tournament and then
+    prints them in the correct format to be used in javascript.
+
+    Example run:
+        python generate_data.py -n 300 "Brisbane" "ATP 250" > ../static/data.js
+    """
     tournament = args.tournament
     points_list = points(args.type)
     if not points_list:

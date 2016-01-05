@@ -6,6 +6,10 @@ Breakdown of how much each round at each type of tournament is worth.
 
 
 def points(tournament_level):
+    """
+    For each tournament type returns a list of the amount of points earned at
+    each level.
+    """
     if tournament_level == "Grand Slam":
         return [10, 45, 90, 180, 360, 720, 1200, 2000]
     elif tournament_level == "Masters 128":

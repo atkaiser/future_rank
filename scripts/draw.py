@@ -8,10 +8,19 @@ import random
 import requests
 from lxml import html
 from tqdm import tqdm
-import rankings
 
 
 def get_tournament_url(current_tournament, root_url):
+    """
+    Gets the url where the draw can be found for the current tournament
+
+    Args:
+        current_tournament (str): The city of the current tournament
+        root_url (str): The base url to use
+
+    Returns:
+        str: The url where the draw can be found
+    """
     page = requests.get(root_url + '/en/tournaments')
     tree = html.fromstring(page.content)
     all_tournaments = tree.xpath('//li[@class=" has-link no-padding"]/a')
@@ -23,8 +32,21 @@ def get_tournament_url(current_tournament, root_url):
     return tournament_url + "?matchType=singles"
 
 
-def create_random_seeds(matches, seeds):
-    max_seed = find_max_seed(seeds)
+def _create_random_seeds(matches, seeds):
+    """
+    For players that are in matches, but not in seeds, assign a random seed
+    that is greater than the rest of the seeds, and then assign the "Bye"
+    player the last seed
+
+    Args:
+        matches (list of str): All the players in the first round
+        seeds (dict str->int):
+            Dictionary of already assigned seeds player->seed
+
+    Returns:
+        None (Adds to the seeds dictionary the new seeds)
+    """
+    max_seed = _find_max_seed(seeds)
     bye = False
     for player in random.sample(matches, len(matches)):
         if player == "Bye":
@@ -37,18 +59,32 @@ def create_random_seeds(matches, seeds):
 
 
 def extend_seeds(matches, seeds, rankings):
+    """
+    Add to the seeds players who are not seeded, but are in the rankings, in
+    the order that they are in the rankings
+
+    Args:
+        matches (list of str): All the players in the first round
+        seeds (dict str->int):
+            Dictionary of already assigned seeds player->seed
+        rankings (list): Current rankings in form [player, points, link]
+
+    Returns:
+        dict: Dictionary same as seeds, but with the new rankings added
+    """
     sorted(rankings, key=lambda ranking: ranking[1])
-    max_seed = find_max_seed(seeds)
+    max_seed = _find_max_seed(seeds)
     for ranking in rankings:
         player = ranking[0]
         if player in matches and player not in seeds:
             seeds[player] = max_seed
             max_seed += 1
-    create_random_seeds(matches, seeds)
+    _create_random_seeds(matches, seeds)
     return seeds
 
 
-def find_max_seed(seeds):
+def _find_max_seed(seeds):
+    """Finds one plus the max seed in the seeds dictionary"""
     max_seed = 0
     for key in seeds:
         if seeds[key] > max_seed:
@@ -60,6 +96,19 @@ def find_max_seed(seeds):
 def draw(current_tournament,
          root_url='http://www.atpworldtour.com'):
     tournament_url = get_tournament_url(current_tournament, root_url)
+    """
+    Return the draw and seeds for the current tournament.
+
+    Args:
+        current_tournament (str):
+            The name of the city of the current tournament
+        root_url (str): The root url to use
+
+    Returns:
+        matches (list): List of players in the first round in order
+        seeds (dict str->int): Order that the players are expected to win, this
+            goes by seeds first and then world ranking, and then random
+    """
     page = requests.get(tournament_url)
     tree = html.fromstring(page.content)
 
@@ -88,7 +137,7 @@ def draw(current_tournament,
 
     return matches, seeds
 
-
+# To be used for testing
 if __name__ == '__main__':
     matches, seeds = draw("Australian Open")
     print(matches)
