@@ -1,7 +1,12 @@
-// Methods related to click events
+/*
+ * Methods related to click events
+ */
 
-
-// Update based on someone clicking on the bracket
+/**
+ * Responds to click even on the left side of the page.  If it is on a player
+ * it will update the bracket with that player a winner in the round that was
+ * clicked on
+ */
 function respondToClick( event ) {
     var origTarget = event.target;
     var target = event.target;
@@ -34,7 +39,11 @@ function respondToClick( event ) {
     }
 }
 
-// Based on rounds results calculate rankings
+/**
+ * Calculate new rankings based on base rankings that don't have the current 
+ * tournament the results of the tournament (rounds) and the amount of points
+ * each round is worth.
+ */
 function calcRankings(rankings, rounds, points) {
     var newRankings = $.extend({}, rankings);
     for(var i = 0; i < rounds.length-1; i += 1) {
@@ -65,6 +74,10 @@ function calcRankings(rankings, rounds, points) {
     return newRankings;
 }
 
+/**
+ * Respond to the hide round button being clicked.  Will hide the largest round
+ * if there is more than the finals showing.
+ */
 function hideRound() {
     if (displayedRounds > 0) {
         displayedRounds -= 1;
@@ -73,6 +86,10 @@ function hideRound() {
     updateDisplayedBracket(rounds, displayedRounds);
 }
 
+/**
+ * Respond to the show round button being clicked.  Will show another round if 
+ * there is rounds currently being hidden.
+ */
 function showRound() {
     if (displayedRounds < 7) {
         displayedRounds += 1;
@@ -81,6 +98,9 @@ function showRound() {
     updateDisplayedBracket(rounds, displayedRounds);
 }
 
+/**
+ * Disable or enable the buttons depending if they will do anything.
+ */
 function _updateButtons() {
     if (displayedRounds >= numRounds(rounds)) {
         $("#showRound").prop("disabled", true)

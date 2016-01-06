@@ -1,3 +1,12 @@
+/*
+ * Functions that update what is displayed.
+ */
+
+/**
+ * Takes in what round and player were clicked on and sets them as the winner
+ * in that round, and any following rounds that the person they beat had won.
+ * Doesn't return anything just updates the rounds variable.
+ */
 function updateRoundsOnClick(rounds, player, round) {
     var match = Math.floor(rounds[round].indexOf(player) / 2);
     round += 1;
@@ -15,7 +24,10 @@ function updateRoundsOnClick(rounds, player, round) {
     }
 }
 
-//Update the displayed rankings
+/**
+ * Takes in the new rankings and updates the rankings table with those rankings
+ * and updates the up down arrows in that table.
+ */
 function updateDisplayedRankings(rankings) {
     var rankingsList = [];
     for (var player in rankings) {
@@ -63,6 +75,10 @@ function updateDisplayedRankings(rankings) {
     }
 }
 
+/**
+ * Takes in rounds and how many rounds to display and updates the displayed
+ * bracket
+ */
 function updateDisplayedBracket(rounds, roundsToDisplay) {
     
     var startRound = (rounds.length-1) - roundsToDisplay;
@@ -73,7 +89,7 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
         matches.push(match);
     }
     
-    var results = getResults(rounds, roundsToDisplay);
+    var results = generateResults(rounds, roundsToDisplay);
 
     var data = {
             teams : matches,
@@ -87,7 +103,11 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
         });
 }
 
-function getResults(rounds, roundsToDisplay) {
+/**
+ * Takes in rounds and how many rounds are going to be played and returns an
+ * array of who won each match that can be fed into jQuerry Bracket
+ */
+function generateResults(rounds, roundsToDisplay) {
     var startValue = (rounds.length-1) - roundsToDisplay;
     var results = [];
     for(var i = startValue; i < rounds.length-1; i += 1) {

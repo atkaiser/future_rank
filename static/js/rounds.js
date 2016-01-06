@@ -1,4 +1,8 @@
-function createRounds(players) {
+/**
+ * Fills out the rest of the bracket, showing who advances for each round based
+ * on the seeds given.
+ */
+function createRounds(players, seeds) {
     var rounds = [players];
     while (rounds[rounds.length-1].length > 1) {
         var newRound = [];
