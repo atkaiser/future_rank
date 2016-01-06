@@ -2,7 +2,7 @@
 
 
 // Update based on someone clicking on the bracket
-$( "#left" ).click(function respondToClick( event ) {
+function respondToClick( event ) {
     var origTarget = event.target;
     var target = event.target;
     if (!isInArray("team", target.parentElement.classList)) {
@@ -32,7 +32,7 @@ $( "#left" ).click(function respondToClick( event ) {
         var newRankings = calcRankings(rankings, rounds, points);
         updateDisplayedRankings(newRankings);
     }
-});
+}
 
 // Based on rounds results calculate rankings
 function calcRankings(rankings, rounds, points) {

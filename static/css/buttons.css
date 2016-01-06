@@ -1,0 +1,36 @@
+#navButtons {
+    position: absolute;
+    left: 10px;
+    top: 1.5px;
+}
+
+.btn {
+    border: 0 none;
+    border-radius: 10px;
+    
+    width: 200px;
+    
+    padding: 5px 30px;
+    margin: 0;
+    
+    cursor: pointer;
+    display: inline-block;
+    
+    font-size: 14px;
+    color: #fff;
+    text-transform: none;
+    
+    transition: all 80ms ease-in-out;
+    
+    background: #0167F6;
+    color: #FFFFFF;
+    
+}
+
+.btn:hover {
+    opacity: .7;
+}
+
+.btn:disabled {
+    opacity: .5;
+}

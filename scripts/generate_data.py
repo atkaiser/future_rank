@@ -21,7 +21,7 @@ def print_new_rankings(rankings):
     print("var rankings = {")
     for ranking in rankings:
         print('    "{}": {},'.format(ranking[0], ranking[1]))
-    print("}\n")
+    print("};\n")
 
 
 def print_old_rankings(rankings):
@@ -31,20 +31,20 @@ def print_old_rankings(rankings):
     for ranking in rankings:
         print('    "{}": {},'.format(ranking[0], rank_num))
         rank_num += 1
-    print("}\n")
+    print("};\n")
 
 
 def print_seeds(seeds):
     print("var seeds = {")
     for key, value in sorted(iter(seeds.items()), key=lambda x: x[1]):
         print('    "{}": {},'.format(key, value))
-    print("}\n")
+    print("};\n")
 
 
 def print_players(matches):
     print("var players =\n[")
     print("    '" + "',\n    '".join(matches), end="")
-    print("'\n]\n")
+    print("'\n];\n")
 
 
 def main(args):

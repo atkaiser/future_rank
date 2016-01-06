@@ -21,7 +21,7 @@ function updateDisplayedRankings(rankings) {
     for (var player in rankings) {
         rankingsList.push([player, rankings[player]]);
     }
-    rankingsList.sort(function sort(a, b) {return b[1] - a[1]});
+    rankingsList.sort(function sort(a, b) {return b[1] - a[1];});
     var rankingsTable = $('#rankings');
     rankingsTable.empty();
     var tableHeader = $('<tr/>');
@@ -91,7 +91,7 @@ function getResults(rounds, roundsToDisplay) {
     var startValue = (rounds.length-1) - roundsToDisplay;
     var results = [];
     for(var i = startValue; i < rounds.length-1; i += 1) {
-        var resultRound = []
+        var resultRound = [];
         var players = rounds[i];
         var winners = rounds[i+1];
         for(var j = 0; j < players.length; j += 2) {
