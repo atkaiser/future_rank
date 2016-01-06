@@ -10,6 +10,7 @@
 function respondToClick( event ) {
     var origTarget = event.target;
     var target = event.target;
+    // Return if the click isn't on a player
     if (!isInArray("team", target.parentElement.classList)) {
         return;
     }
@@ -17,14 +18,15 @@ function respondToClick( event ) {
     if (teamId == "-1") {
         return;
     }
-    while ( target != null && 
+    while ( target !== null && 
             !isInArray("round", target.classList)) {
         target = target.parentElement;
     }
-    if (target != null) {
-        var round = Math.log2($(target).children().length) + 1;
-        round = numRounds(rounds) - round;
+    if (target === null) {
+        return;
     }
+    var round = Math.log2($(target).children().length) + 1;
+    round = numRounds(rounds) - round;
     
     var startRound = numRounds(rounds) - displayedRounds;
     
@@ -103,13 +105,13 @@ function showRound() {
  */
 function _updateButtons() {
     if (displayedRounds >= numRounds(rounds)) {
-        $("#showRound").prop("disabled", true)
+        $("#showRound").prop("disabled", true);
     } else {
-        $("#showRound").prop("disabled", false)
+        $("#showRound").prop("disabled", false);
     }
     if (displayedRounds <= 1) {
-        $("#hideRound").prop("disabled", true)
+        $("#hideRound").prop("disabled", true);
     } else {
-        $("#hideRound").prop("disabled", false)
+        $("#hideRound").prop("disabled", false);
     }
 }

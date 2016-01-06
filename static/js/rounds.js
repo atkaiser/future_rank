@@ -18,5 +18,5 @@ function createRounds(players, seeds) {
         }
         rounds.push(newRound);
     }
-    return rounds
+    return rounds;
 }

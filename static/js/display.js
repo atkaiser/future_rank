@@ -43,7 +43,7 @@ function updateDisplayedRankings(rankings) {
     $('<th/>').text('Points').appendTo(tableHeader);
     tableHeader.appendTo(rankingsTable);
     for (var i = 0; i < rankingsList.length; i++) {
-        var player = rankingsList[i][0];
+        player = rankingsList[i][0];
         var tableRow = $('<tr/>');
         $('<td/>')
             .text(i+1)
@@ -99,7 +99,7 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
     $(function initBracket() {
         $('#bracket .main').bracket({
             skipConsolationRound: true,
-            init: data})
+            init: data});
         });
 }
 
