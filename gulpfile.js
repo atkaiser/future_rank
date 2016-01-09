@@ -7,19 +7,17 @@ var rename = require("gulp-rename");
 var jshint = require('gulp-jshint');
 
 // default task
-gulp.task('default', function() {
-    ['js', 'css', 'watch']
-});
+gulp.task('default', ['js', 'css', 'watch']);
 
 //watch task
 gulp.task('watch', function() {
-    gulp.watch('./static/js/*.js', ['js', 'jshint']);
+    gulp.watch('./static/js/**/*.js', ['js', 'jshint']);
     gulp.watch('./static/css/*.css', ['css']);
 });
 
 // js task
 gulp.task('js', function() {
-    return gulp.src('./static/js/*.js')
+    return gulp.src('./static/js/**/*.js')
         .pipe(concat('all.js'))
         .pipe(gulp.dest('./server/static/'));
 });
@@ -33,7 +31,7 @@ gulp.task('jshint', function() {
 
 // css task
 gulp.task('css', function() {
-    return gulp.src('./static/css/*.css')
+    return gulp.src('./static/css/**/*.css')
         .pipe(concat('all.css'))
         .pipe(gulp.dest('./server/static/'));
 });

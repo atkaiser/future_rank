@@ -4,9 +4,10 @@ Gets the draw for the current tournament.
 @author: Alex Kaiser
 """
 
+import html
 import random
 import requests
-from lxml import html
+import lxml.html
 from tqdm import tqdm
 
 
@@ -22,7 +23,7 @@ def get_tournament_url(current_tournament, root_url):
         str: The url where the draw can be found
     """
     page = requests.get(root_url + '/en/tournaments')
-    tree = html.fromstring(page.content)
+    tree = lxml.html.fromstring(page.content)
     all_tournaments = tree.xpath('//li[@class=" has-link no-padding"]/a')
     for tournament in all_tournaments:
         if current_tournament in tournament.text:
@@ -110,7 +111,7 @@ def draw(current_tournament,
             goes by seeds first and then world ranking, and then random
     """
     page = requests.get(tournament_url)
-    tree = html.fromstring(page.content)
+    tree = lxml.html.fromstring(page.content)
 
     matches = []
     seeds = {}
@@ -121,7 +122,7 @@ def draw(current_tournament,
             players = player_box.xpath('td/a')
             if players:
                 player = players[0]
-                player = player.get("data-ga-label")
+                player = html.unescape(player.get("data-ga-label"))
                 matches.append(player)
             else:
                 matches.append("Bye")
