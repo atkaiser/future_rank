@@ -5,4 +5,6 @@ Created on Jan 5, 2016
 '''
 
 from server import app
-app.run()
+
+if __name__ == "__main__":
+    app.run()
