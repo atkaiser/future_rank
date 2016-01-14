@@ -85,7 +85,7 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
     
     var matches = [];
     for (var i = 0; i < rounds[startRound].length; i += 2) {
-        var match = [rounds[startRound][i], rounds[startRound][i+1]];
+        var match = [shortenName(rounds[startRound][i]), shortenName(rounds[startRound][i+1])];
         matches.push(match);
     }
     
@@ -101,6 +101,20 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
             skipConsolationRound: true,
             init: data});
         });
+}
+
+/**
+ * Takes a name and returns the first letter of the first name and then the last name.
+ * (If it is Bye, it will just return Bye)
+ */
+function shortenName(name) {
+    if (name == "Bye") {
+      return name;
+    } else {
+      var name_parts = name.split(" ");
+      name_parts[0] = name_parts[0][0] + ".";
+      return name_parts.join(" ");
+    }
 }
 
 /**
