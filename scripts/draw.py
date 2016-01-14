@@ -96,7 +96,6 @@ def _find_max_seed(seeds):
 
 def draw(current_tournament,
          root_url='http://www.atpworldtour.com'):
-    tournament_url = get_tournament_url(current_tournament, root_url)
     """
     Return the draw and seeds for the current tournament.
 
@@ -110,6 +109,7 @@ def draw(current_tournament,
         seeds (dict str->int): Order that the players are expected to win, this
             goes by seeds first and then world ranking, and then random
     """
+    tournament_url = get_tournament_url(current_tournament, root_url)
     page = requests.get(tournament_url)
     tree = lxml.html.fromstring(page.content)
 
@@ -140,6 +140,6 @@ def draw(current_tournament,
 
 # To be used for testing
 if __name__ == '__main__':
-    matches, seeds = draw("Australian Open")
+    matches, seeds = draw("Sydney")
     print(matches)
     print(seeds)
