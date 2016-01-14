@@ -1,4 +1,5 @@
 # Ignore everything in this directory
-*
+*.js
+*.css
 # Except this file
 !.gitignore
