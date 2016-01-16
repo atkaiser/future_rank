@@ -57,9 +57,9 @@ html, body {
     -ms-overflow-style: none;
 }
 
-#left::-webkit-scrollbar, #right::-webkit-scrollbar {
+/* #left::-webkit-scrollbar, #right::-webkit-scrollbar {
     display: none;
-}
+} */
 
 #left {
     -webkit-box-flex: 1;
