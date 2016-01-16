@@ -9,16 +9,39 @@
   </head>
   <script type="text/javascript" src="static/all.js"></script>
   <body>
+    <div id="help">
+      <div class="help-title">About</div>
+      <div class="help-info">
+        This page is meant to show what the rankings will be like after a tournament finishes. The 
+        rankings on the right reflect what the rankings will look like after the tournament finishes 
+        based on the results displayed on the left.
+      </div>
+      <div class="help-title">Changing Results</div>
+      <div class="help-info">
+        To change the tournament results, click on a loser and they will become the winner of that 
+        match.  Additionally they will become the winner of any matches the previous winner had won 
+        latter on in the tournament.
+      </div>
+      <div class="help-title">Hiding and Showing Rounds</div>
+      <div class="help-info">
+        To make it easier to manage the results of a tournament you can click on the "Show round"
+        and "Hide round" buttons on the top left.  The "Hide round" button will hide the largest 
+        round, and the "Show round" button will bring back the previously hidden round.
+      </div>
+    </div>
     <div id="top">
       <div id="navButtons">
         <button id="showRound" class="btn" onclick="showRound()" disabled>
-          < Show more rounds
+          < Show round
         </button>
         <button id="hideRound" class="btn" onclick="hideRound()">
-          Hide last round >
+          Hide round >
         </button>
       </div>
       <div id="title">Future Tennis Rankings</div>
+      <div id="help-btn-wrapper">
+        <button id="help-btn" class="btn">Help</button>
+      </div>
     </div>
     <div id="container">
     	<div id="left">
@@ -48,6 +71,13 @@
       
       // Respond to events
       $( "#left" ).click(respondToClick);
+      
+      // Deal with help
+      $('#help-btn').mouseover(function() {
+        $('#help').show();
+      }).mouseout(function() {
+        $('#help').hide();
+      })
     </script>
   </body>
 </html>

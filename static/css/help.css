@@ -1,0 +1,24 @@
+#help {
+	display: none;
+	position: absolute; 
+	right: 50px;
+	top: 65px;
+	width: 500px;
+	background: white;
+	z-index: 100;
+	font-size: 1.2rem;
+	padding: 10px;
+	border: solid;
+}
+
+.help-title {
+	text-align: center;
+	width: 100%;
+	font-weight: bold;
+	font-size: 1.4rem;
+}
+
+.help-info {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

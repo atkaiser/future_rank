@@ -12,7 +12,7 @@ gulp.task('default', ['js', 'css', 'watch']);
 //watch task
 gulp.task('watch', function() {
     gulp.watch('./static/js/**/*.js', ['js', 'jshint']);
-    gulp.watch('./static/css/*.css', ['css']);
+    gulp.watch('./static/css/**/*.css', ['css']);
 });
 
 // js task

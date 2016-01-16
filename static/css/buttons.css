@@ -4,6 +4,12 @@
     top: 1.5px;
 }
 
+#help-btn-wrapper {
+	  position: absolute;
+	  right: 10px;
+	  top: 1.5px;
+}
+
 .btn {
     border: 0 none;
     border-radius: 10px;
