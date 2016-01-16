@@ -109,6 +109,72 @@ def draw(current_tournament,
         seeds (dict str->int): Order that the players are expected to win, this
             goes by seeds first and then world ranking, and then random
     """
+    # The grand slams aren't on the atp website for draws, so they have to be parsed differently
+    if current_tournament == "Australian Open":
+        matches, seeds = parse_australian_open_draw()
+    else:
+        matches, seeds = parse_atp_draw(current_tournament, root_url)
+    return matches, seeds
+
+
+def draw_for_grand_slam(url):
+    page = requests.get(url)
+    tree = lxml.html.fromstring(page.content)
+    
+    matches = [];
+    seeds = {};
+    
+    for player_link in tree.xpath('//a[@class="sc"]'):
+        if not player_link.text:
+            text = player_link.getparent().text_content()
+            for line in text.split("\n"):
+                player_line = line.strip()
+                if player_line:
+                    if not "(" in player_line:
+                        matches.append("Bye")
+                    else:
+                        player = player_line[0:player_line.index("(")-1]
+                        matches.append(player)
+                        if "[" in player_line:
+                            start = player_line.index("[") + 1
+                            end = player_line.index("]")
+                            seed = player_line[start:end]
+                            seeds[player] = int(seed)
+        
+    return matches, seeds
+
+
+def parse_australian_open_draw():
+    """
+    Return the draw and seeds for the australian open
+    """
+    base_url = "http://www.ausopen.com/en_AU/scores/draws/ms/"
+    
+    matches = [];
+    seeds = {};
+    
+    for section in range(1,5):
+        url = base_url + "r1s" + str(section) + ".html"
+        section_matches, section_seeds = draw_for_grand_slam(url)
+        for match in section_matches:
+            matches.append(match)
+        for key in section_seeds:
+            seeds[key] = section_seeds[key]
+        
+    return matches, seeds
+
+
+def parse_atp_draw(current_tournament, root_url):
+    """
+    Args:
+        current_tournament (str):
+            The name of the city of the current tournament
+        root_url (str): The root url to use
+
+    Returns:
+        matches (list): List of players in the first round in order
+        seeds (dict str->int): Order that the players are expected to win, this
+    """
     tournament_url = get_tournament_url(current_tournament, root_url)
     page = requests.get(tournament_url)
     tree = lxml.html.fromstring(page.content)
@@ -140,6 +206,6 @@ def draw(current_tournament,
 
 # To be used for testing
 if __name__ == '__main__':
-    matches, seeds = draw("Sydney")
+    matches, seeds = draw("Australian Open")
     print(matches)
     print(seeds)
