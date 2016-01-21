@@ -36,6 +36,10 @@ tr:nth-child(odd) td {
     background: #FEFEFE;
 }
 
+.rank-hover {
+    background: red;
+}
+
 .up-arrow {
     color: green;
 }

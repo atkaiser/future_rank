@@ -75,6 +75,15 @@ function updateDisplayedRankings(rankings) {
     }
 }
 
+function highlightInRankings(event) {
+    var teamId = $(event.target.parentElement).attr("data-teamid");
+    var startRound = numRounds(rounds) - displayedRounds;
+    var player = rounds[startRound][teamId];
+    var findStr = "td.player:contains('" + player + "')";
+    console.log($(findStr));
+    console.log(player);
+}
+
 /**
  * Takes in rounds and how many rounds to display and updates the displayed
  * bracket
@@ -100,7 +109,8 @@ function updateDisplayedBracket(rounds, roundsToDisplay) {
         $('#bracket .main').bracket({
             skipConsolationRound: true,
             init: data});
-        });
+        $('.label').mouseover(highlightInRankings)
+    });
 }
 
 /**
