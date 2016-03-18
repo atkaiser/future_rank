@@ -206,15 +206,16 @@ def parse_atp_draw(current_tournament, root_url):
                 else:
                     print("ERROR: Found seed without player")
 
-    results = results_from_draw(tree)
+    results = results_from_draw(tree, len(matches))
 
     return matches, seeds, results
 
 
-def results_from_draw(tree):
+def results_from_draw(tree, num_players_in_draw):
     """
     Args:
         tree (str): lxml representation of the tournament page
+        num_players_in_draw (int)
 
     Returns:
         results (dict int->str): Match number to who won.
@@ -232,7 +233,7 @@ def results_from_draw(tree):
                     rowspan = int(child.attrib['rowspan'])
                     round_number = math.floor(rowspan / 2)
                     base = 0
-                    matches_number = len(matches) / 2
+                    matches_number = num_players_in_draw / 2
                     while (round_number != 0):
                         base += matches_number
                         matches_number /= 2
