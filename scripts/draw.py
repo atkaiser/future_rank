@@ -1,6 +1,8 @@
 """
 Gets the draw for the current tournament.
 
+And the current results for the tournament if they exist.
+
 @author: Alex Kaiser
 """
 
@@ -8,6 +10,7 @@ import html
 import random
 import requests
 import lxml.html
+import math
 from tqdm import tqdm
 
 
@@ -112,9 +115,10 @@ def draw(current_tournament,
     # The grand slams aren't on the atp website for draws, so they have to be parsed differently
     if current_tournament == "Australian Open":
         matches, seeds = parse_australian_open_draw()
+        results = {}
     else:
-        matches, seeds = parse_atp_draw(current_tournament, root_url)
-    return matches, seeds
+        matches, seeds, results = parse_atp_draw(current_tournament, root_url)
+    return matches, seeds, results
 
 
 def draw_for_grand_slam(url):
@@ -202,10 +206,46 @@ def parse_atp_draw(current_tournament, root_url):
                 else:
                     print("ERROR: Found seed without player")
 
-    return matches, seeds
+    results = results_from_draw(tree)
+
+    return matches, seeds, results
+
+
+def results_from_draw(tree):
+    """
+    Args:
+        tree (str): lxml representation of the tournament page
+
+    Returns:
+        results (dict int->str): Match number to who won.
+    """
+    results = {}
+    match_number = 0
+    for match in tqdm(tree.xpath('//table[@class=' +
+                                 '"scores-draw-entry-box-table"]')):
+        row = match.getparent().getparent().getparent()
+        children = row.getchildren()[1:]
+        for child in children:
+            if child.attrib["class"] != "scaffolding-bracket":
+                winner_elem = child.xpath('div/div/a')
+                if(winner_elem):
+                    rowspan = int(child.attrib['rowspan'])
+                    round_number = math.floor(rowspan / 2)
+                    base = 0
+                    matches_number = len(matches) / 2
+                    while (round_number != 0):
+                        base += matches_number
+                        matches_number /= 2
+                        round_number = math.floor(round_number / 2)
+                    this_match = base + (match_number / rowspan)
+                    results[int(this_match)] = winner_elem[0].text 
+
+        match_number += 1
+    return results
 
 # To be used for testing
 if __name__ == '__main__':
-    matches, seeds = draw("Australian Open")
+    matches, seeds, results = draw("Indian Wells")
     print(matches)
     print(seeds)
+    print(results)

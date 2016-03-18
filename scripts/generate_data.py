@@ -34,6 +34,15 @@ def print_old_rankings(rankings):
     print("};\n")
 
 
+def print_results(results):
+    print("var results = {")
+    rank_num = 1
+    for key in results:
+        print('    {}: "{}",'.format(key, results[key]))
+        rank_num += 1
+    print("};\n")
+
+
 def print_seeds(seeds):
     print("var seeds = {")
     for key, value in sorted(iter(seeds.items()), key=lambda x: x[1]):
@@ -60,7 +69,7 @@ def main(args):
     if not points_list:
         print("Not a valid tournament type")
         return
-    matches, seeds = draw(tournament)
+    matches, seeds, results = draw(tournament)
     if args.num_rankings:
         num_rankings = args.num_rankings
     else:
@@ -72,6 +81,7 @@ def main(args):
     print_seeds(seeds)
     print_new_rankings(new_rankings)
     print_old_rankings(current_rankings)
+    print_results(results)
     print_points([str(p) for p in points_list])
     print("var tournament = '{}';".format(tournament))
 

@@ -30,23 +30,25 @@ def get_current_rankings(num_rankings,
     last_monday = date.today()
     while last_monday.weekday() != 0:
         last_monday -= timedelta(days=1)
-    page = requests.get(root_url +
-                        '/en/rankings/singles?rankDate=' +
-                        str(last_monday) +
-                        '&rankRange=1-' +
-                        str(num_rankings))
-    tree = html.fromstring(page.content)
-
-    all_players = tree.xpath('//table[@class="mega-table"]/tbody')[0]
-
     current_rankings = []
+    while (not current_rankings):
+        page = requests.get(root_url +
+                            '/en/rankings/singles?rankDate=' +
+                            str(last_monday) +
+                            '&rankRange=1-' +
+                            str(num_rankings))
+        tree = html.fromstring(page.content)
 
-    for player_row in tqdm(all_players):
-        name = player_row.xpath('td[@class="player-cell"]/a/text()')[0]
-        points_cell = player_row.xpath('td[@class="points-cell"]/a')[0]
-        points = int(points_cell.text.replace(",", ""))
-        link = points_cell.get("href")
-        current_rankings.append([name, points, link])
+        all_players = tree.xpath('//table[@class="mega-table"]/tbody')[0]
+
+        for player_row in tqdm(all_players):
+            name = player_row.xpath('td[@class="player-cell"]/a/text()')[0]
+            points_cell = player_row.xpath('td[@class="points-cell"]/a')[0]
+            points = int(points_cell.text.replace(",", ""))
+            link = points_cell.get("href")
+            current_rankings.append([name, points, link])
+
+        last_monday -= timedelta(days=7)
 
     return current_rankings
 
