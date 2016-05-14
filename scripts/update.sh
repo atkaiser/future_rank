@@ -3,12 +3,13 @@
 TOURNAMENT=Rome
 TYPE="Masters 96"
 
-# Where this script is stored
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ~/.virtualenvs/future_rank/bin/activate
 
-cd $DIR
+cd ~/dev/future_rank/scripts
 
-python generate_data.py -n 300 "$TOURNAMENT" "$TYPE" > $DIR/../static/js/data.js
+date
+
+python generate_data.py -n 50 "$TOURNAMENT" "$TYPE" > ../static/js/data.js
 
 cd ..
 
