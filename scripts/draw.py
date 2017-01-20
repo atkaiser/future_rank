@@ -113,11 +113,11 @@ def draw(current_tournament,
             goes by seeds first and then world ranking, and then random
     """
     # The grand slams aren't on the atp website for draws, so they have to be parsed differently
-    if current_tournament == "Australian Open":
-        matches, seeds = parse_australian_open_draw()
-        results = {}
-    else:
-        matches, seeds, results = parse_atp_draw(current_tournament, root_url)
+#     if current_tournament == "Australian Open":
+#         matches, seeds = parse_australian_open_draw()
+#         results = {}
+#     else:
+    matches, seeds, results = parse_atp_draw(current_tournament, root_url)
     return matches, seeds, results
 
 
@@ -180,6 +180,7 @@ def parse_atp_draw(current_tournament, root_url):
         seeds (dict str->int): Order that the players are expected to win, this
     """
     tournament_url = get_tournament_url(current_tournament, root_url)
+    print("Tournament url: " + tournament_url)
     page = requests.get(tournament_url)
     tree = lxml.html.fromstring(page.content)
 
