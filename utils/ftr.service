@@ -1,0 +1,11 @@
+[Unit]
+Description=Future tennis rank web service
+After=network.target
+
+[Service]
+User=akaiser
+ExecStart=/bin/bash -c 'cd /home/akaiser/dev/future_rank; source ~/.virtualenvs/future_rank/bin/activate; uwsgi --ini utils/wsgi.ini'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
