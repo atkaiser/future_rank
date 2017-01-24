@@ -1,7 +1,11 @@
+git add -p
+git commit
+git push origin master
+
 # ssh and setup environ
-ssh sc2ls@sc2ls.mooo.com /bin/bash << EOF
+ssh akaiser@akaiser0.mooo.com /bin/bash << EOF
   echo "Sourcing bash profile"
-  source /home/sc2ls/.bash_profile
+  source /home/sc2ls/.bashrc
   echo "Loading virtual env"
   workon future_rank
   echo "Pulling"
@@ -9,8 +13,6 @@ ssh sc2ls@sc2ls.mooo.com /bin/bash << EOF
   echo "Gulping"
   gulp js
   gulp css
-  echo "Stopping server"
-  ps aux | grep uwsgi | grep utils | grep -v grep | sed 's/\s\+/ /g' | cut -d' ' -f2 | xargs kill -9
-  echo "Starting server ..."
-  nohup uwsgi --ini utils/wsgi.ini > /var/log/ftr/server/server.out 2>&1 < /dev/null &
+  echo "Restarting server"
+  sudo systemctl restart future_rank
 EOF
