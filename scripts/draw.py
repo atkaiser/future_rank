@@ -180,7 +180,6 @@ def parse_atp_draw(current_tournament, root_url):
         seeds (dict str->int): Order that the players are expected to win, this
     """
     tournament_url = get_tournament_url(current_tournament, root_url)
-    print("Tournament url: " + tournament_url)
     page = requests.get(tournament_url)
     tree = lxml.html.fromstring(page.content)
 
@@ -194,6 +193,8 @@ def parse_atp_draw(current_tournament, root_url):
             if players:
                 player = players[0]
                 player = html.unescape(player.get("data-ga-label"))
+                #TODO: Fix hack for apostrephes
+                player = player.replace("'", "")
                 matches.append(player)
             else:
                 matches.append("Bye")
