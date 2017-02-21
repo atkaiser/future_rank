@@ -1,29 +1,49 @@
 """
 Breakdown of how much each round at each type of tournament is worth.
 
-@author: Alex Kaiser
+@author: Alex Kaiser (edited Feb 20th, 2017)
 """
+import requests
+import lxml.html
+import re
 
-
-def points(tournament_level):
+def points(current_tournament, root_url='http://www.atpworldtour.com'):
     """
-    For each tournament type returns a list of the amount of points earned at
-    each level.
+    Get the amount of points for each round for a current tournament
+    
+    Args:
+        current_tournament (str): The city of the current tournament
+        root_url (str): The base url to use
+
+    Returns:
+        points_list (list of ints): List of ints with value of points for each
+            round.  Largest points at the end
     """
-    if tournament_level == "Grand Slam":
-        return [10, 45, 90, 180, 360, 720, 1200, 2000]
-    elif tournament_level == "Masters 128":
-        return [10, 25, 45, 90, 180, 360, 600, 1000]
-    elif tournament_level == "Masters 96":
-        return [10, 45, 90, 180, 360, 600, 1000]
-    elif tournament_level == "ATP 500":
-        return [20, 45, 90, 180, 300, 500]
-    elif tournament_level == "ATP 250":
-        return [5, 20, 45, 90, 150, 250]
+    page = requests.get(root_url + '/en/tournaments')
+    tree = lxml.html.fromstring(page.content)
+    all_tournaments = tree.xpath('//li[@class=" has-link no-padding"]/a')
+    for tournament in all_tournaments:
+        if current_tournament in tournament.text:
+            tournament_id = re.search("(\d+)/overview", tournament.get("href")).group(1)
+            url = root_url + "/en/content/ajax/tournament/points-and-prize-money?tournamentId=" + tournament_id
+            break
+    page = requests.get(url)
+    tree = lxml.html.fromstring(page.content)
+    main_table = tree.xpath('//div[@class="points-and-prize-money-table"]/table/tbody')[0]
+    points_list = []
+    for row in main_table:
+        columns = list(row)
+        point_total = int(columns[2].text.strip())
+        if columns[1].text.strip() == "Qualifier":
+            break
+        elif point_total == 0:
+            points_list.append(0)
+            break
+        else:
+            points_list.append(point_total)
+    points_list.reverse()
+    return points_list
 
 
-tournament_types = ["Grand Slam",
-                    "Masters 128",
-                    "Masters 96",
-                    "ATP 500",
-                    "ATP 250"]
+if __name__ == '__main__':
+    print(points("Rio de Janeiro"))
