@@ -10,4 +10,4 @@ python generate_data.py > ../static/js/data.js
 
 cd ..
 
-gulp js
+/home/akaiser/.nvm/versions/node/v6.9.4/bin/gulp js
