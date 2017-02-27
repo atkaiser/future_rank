@@ -7,7 +7,7 @@ Created on Feb 20, 2017
 '''
 import requests
 import lxml.html
-from datetime import datetime
+from datetime import datetime, timedelta
 from points import points
 
 def find_current_tournament(root_url='http://www.atpworldtour.com'):
@@ -25,6 +25,9 @@ def find_current_tournament(root_url='http://www.atpworldtour.com'):
     all_tournaments = tree.xpath('//tr[@class="tourney-result"]')
     tournament_hash = get_tournament_url_to_city_hash(root_url)
     possible_tournaments = []
+    now = datetime.today()
+    now = datetime(*now.timetuple()[:3])
+    now = now + timedelta(days=1)
     for tournament in all_tournaments:
         for child in tournament:
             if child.get("class") =="title-content":
@@ -33,7 +36,7 @@ def find_current_tournament(root_url='http://www.atpworldtour.com'):
                 tournament_dates = elems[2].text
                 tournament_dates = tournament_dates.split("-")
                 start, end = [datetime.strptime(x.strip(), "%Y.%m.%d") for x in tournament_dates]
-                current_tournament = start <= datetime.today() <= end
+                current_tournament = start <= now <= end
                 if current_tournament:
                     possible_tournaments.append(tournament_hash[tournament_link])
     return sorted(possible_tournaments, key=lambda x: -(points(x)[0]))[0]
