@@ -33,7 +33,7 @@ def points(current_tournament, root_url='http://www.atpworldtour.com'):
     points_list = []
     for row in main_table:
         columns = list(row)
-        point_total = int(columns[2].text.strip())
+        point_total = int(columns[2].text.strip().replace(",", ""))
         if columns[1].text.strip() == "Qualifier":
             break
         elif point_total == 0:
