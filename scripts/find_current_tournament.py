@@ -5,15 +5,18 @@ Created on Feb 20, 2017
 
 @author: Alex Kaiser
 '''
-import requests
-import lxml.html
 from datetime import datetime, timedelta
+
+import lxml.html
+import requests
+
 from points import points
+
 
 def find_current_tournament(root_url='http://www.atpworldtour.com'):
     """
     Find the tournament with the most points that is currently running.
-    
+
     Args:
         root_url (str): The base url to use
 
@@ -27,18 +30,19 @@ def find_current_tournament(root_url='http://www.atpworldtour.com'):
     possible_tournaments = []
     now = datetime.today()
     now = datetime(*now.timetuple()[:3])
-    now = now + timedelta(days=1)
     for tournament in all_tournaments:
         for child in tournament:
-            if child.get("class") =="title-content":
+            if child.get("class") == "title-content":
                 elems = list(child)
                 tournament_link = elems[0].get("href")
                 tournament_dates = elems[2].text
                 tournament_dates = tournament_dates.split("-")
-                start, end = [datetime.strptime(x.strip(), "%Y.%m.%d") for x in tournament_dates]
+                start, end = [
+                    datetime.strptime(x.strip(), "%Y.%m.%d") for x in tournament_dates]
                 current_tournament = start <= now <= end
                 if current_tournament:
-                    possible_tournaments.append(tournament_hash[tournament_link])
+                    possible_tournaments.append(
+                        tournament_hash[tournament_link])
     return sorted(possible_tournaments, key=lambda x: -(points(x)[0]))[0]
 
 
