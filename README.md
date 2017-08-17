@@ -10,8 +10,8 @@ Run (with python3):
 
 	pip install -r requirements.txt
 	npm install
-	npm install gulp
-	cd scripts; python generate_data.py <tournament> <type of tournament> > ../static/js/data.js
+	npm install -g gulp
+	cd scripts; python generate_data.py > ../static/js/data.js
 	cd ..
 	gulp css
 	gulp js
