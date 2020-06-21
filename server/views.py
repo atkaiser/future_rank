@@ -26,7 +26,7 @@ def toHome():
 #    return r.text
 
 @app.route('/stocks')
-def toHome():
+def sotcks():
     with open("/home/akaiser/traffic/stocks.txt", "r") as f:
         for line in f:
             return line
