@@ -24,3 +24,9 @@ def toHome():
 #    return "2"
 #    r = requests.get('http://sc2ls.mooo.com:10000/time?origin=777+Mariners+Island+Blvd,+San+Mateo,+CA+94404&destination=5024+Ray+Ave,+Castro+Valley,+CA+94546')
 #    return r.text
+
+@app.route('/stocks')
+def toHome():
+    with open("/home/akaiser/traffic/stocks.txt", "r") as f:
+        for line in f:
+            return line
