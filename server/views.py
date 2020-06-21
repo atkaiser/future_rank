@@ -9,12 +9,18 @@ def index():
 
 @app.route('/traffic/to-work')
 def toWork():
-    return "1"
+    with open("/home/akaiser/traffic/to-work.txt", "r") as f:
+        for line in f:
+            return line     
+#    return "1"
 #    r = requests.get('http://sc2ls.mooo.com:10000/time?origin=5024+Ray+Ave,+Castro+Valley,+CA+94546&destination=777+Mariners+Island+Blvd,+San+Mateo,+CA+94404')
 #    return r.text
 
 @app.route('/traffic/to-home')
 def toHome():
-    return "2"
+    with open("/home/akaiser/traffic/to-home.txt", "r") as f:
+        for line in f:
+            return line
+#    return "2"
 #    r = requests.get('http://sc2ls.mooo.com:10000/time?origin=777+Mariners+Island+Blvd,+San+Mateo,+CA+94404&destination=5024+Ray+Ave,+Castro+Valley,+CA+94546')
 #    return r.text
